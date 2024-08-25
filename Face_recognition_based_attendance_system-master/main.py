@@ -1,9 +1,15 @@
 ############################################# IMPORTING ################################################
+import smtplib
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import tkinter as tk
-from tkinter import ttk
+from tkinter import StringVar, ttk
 from tkinter import messagebox as mess
 import tkinter.simpledialog as tsd
-import cv2,os
+import cv2
+import os
 import csv
 import numpy as np
 from PIL import Image
@@ -11,10 +17,10 @@ import pandas as pd
 import datetime
 import time
 from PIL import Image, ImageTk
-import yagmail
-
+from tkinter import messagebox
 
 ############################################# FUNCTIONS ################################################
+
 
 def assure_path_exists(path):
     dir = os.path.dirname(path)
@@ -23,27 +29,40 @@ def assure_path_exists(path):
 
 ##################################################################################
 
+
 def tick():
     time_string = time.strftime('%H:%M:%S')
     clock.config(text=time_string)
-    clock.after(200,tick)
+    clock.after(200, tick)
+
+##########
+
 
 ###################################################################################
+
 
 def contact():
-    mess._show(title='Contact us', message="Please contact us on : 'xxxxxxxxxxxxx@gmail.com' ")
+    mess._show(title='Contact us',
+               message="Please contact us on : 'xxxxxxxxxxxxx@gmail.com' ")
 
 ###################################################################################
+
 
 def check_haarcascadefile():
     exists = os.path.isfile("haarcascade_frontalface_default.xml")
     if exists:
         pass
     else:
-        mess._show(title='Some file missing', message='Please contact us for help')
+        mess._show(title='Some file missing',
+                   message='Please contact us for help')
         window.destroy()
 
-###################################################################################
+
+###############################################################################
+#
+
+####
+
 
 def save_pass():
     assure_path_exists("TrainingImageLabel/")
@@ -53,16 +72,19 @@ def save_pass():
         key = tf.read()
     else:
         master.destroy()
-        new_pas = tsd.askstring('Old Password not found', 'Please enter a new password below', show='*')
+        new_pas = tsd.askstring('Old Password not found',
+                                'Please enter a new password below', show='*')
         if new_pas == None:
-            mess._show(title='No Password Entered', message='Password not set!! Please try again')
+            mess._show(title='No Password Entered',
+                       message='Password not set!! Please try again')
         else:
             tf = open("TrainingImageLabel\psd.txt", "w")
             tf.write(new_pas)
-            mess._show(title='Password Registered', message='New password was registered successfully!!')
+            mess._show(title='Password Registered',
+                       message='New password was registered successfully!!')
             return
     op = (old.get())
-    newp= (new.get())
+    newp = (new.get())
     nnewp = (nnew.get())
     if (op == key):
         if(newp == nnewp):
@@ -72,42 +94,54 @@ def save_pass():
             mess._show(title='Error', message='Confirm new password again!!!')
             return
     else:
-        mess._show(title='Wrong Password', message='Please enter correct old password.')
+        mess._show(title='Wrong Password',
+                   message='Please enter correct old password.')
         return
-    mess._show(title='Password Changed', message='Password changed successfully!!')
+    mess._show(title='Password Changed',
+               message='Password changed successfully!!')
     master.destroy()
 
 ###################################################################################
+
 
 def change_pass():
     global master
     master = tk.Tk()
     master.geometry("400x160")
-    master.resizable(False,False)
+    master.resizable(False, False)
     master.title("Change Password")
     master.configure(background="white")
-    lbl4 = tk.Label(master,text='    Enter Old Password',bg='white',font=('times', 12, ' bold '))
-    lbl4.place(x=10,y=10)
+    lbl4 = tk.Label(master, text='    Enter Old Password',
+                    bg='white', font=('times', 12, ' bold '))
+    lbl4.place(x=10, y=10)
     global old
-    old=tk.Entry(master,width=25 ,fg="black",relief='solid',font=('times', 12, ' bold '),show='*')
-    old.place(x=180,y=10)
-    lbl5 = tk.Label(master, text='   Enter New Password', bg='white', font=('times', 12, ' bold '))
+    old = tk.Entry(master, width=25, fg="black", relief='solid',
+                   font=('times', 12, ' bold '), show='*')
+    old.place(x=180, y=10)
+    lbl5 = tk.Label(master, text='   Enter New Password',
+                    bg='white', font=('times', 12, ' bold '))
     lbl5.place(x=10, y=45)
     global new
-    new = tk.Entry(master, width=25, fg="black",relief='solid', font=('times', 12, ' bold '),show='*')
+    new = tk.Entry(master, width=25, fg="black", relief='solid',
+                   font=('times', 12, ' bold '), show='*')
     new.place(x=180, y=45)
-    lbl6 = tk.Label(master, text='Confirm New Password', bg='white', font=('times', 12, ' bold '))
+    lbl6 = tk.Label(master, text='Confirm New Password',
+                    bg='white', font=('times', 12, ' bold '))
     lbl6.place(x=10, y=80)
     global nnew
-    nnew = tk.Entry(master, width=25, fg="black", relief='solid',font=('times', 12, ' bold '),show='*')
+    nnew = tk.Entry(master, width=25, fg="black", relief='solid',
+                    font=('times', 12, ' bold '), show='*')
     nnew.place(x=180, y=80)
-    cancel=tk.Button(master,text="Cancel", command=master.destroy ,fg="black"  ,bg="red" ,height=1,width=25 , activebackground = "white" ,font=('times', 10, ' bold '))
+    cancel = tk.Button(master, text="Cancel", command=master.destroy, fg="black", bg="red",
+                       height=1, width=25, activebackground="white", font=('times', 10, ' bold '))
     cancel.place(x=200, y=120)
-    save1 = tk.Button(master, text="Save", command=save_pass, fg="black", bg="#3ece48", height = 1,width=25, activebackground="white", font=('times', 10, ' bold '))
+    save1 = tk.Button(master, text="Save", command=save_pass, fg="black", bg="#3ece48",
+                      height=1, width=25, activebackground="white", font=('times', 10, ' bold '))
     save1.place(x=10, y=120)
     master.mainloop()
 
 #####################################################################################
+
 
 def psw():
     assure_path_exists("TrainingImageLabel/")
@@ -116,13 +150,16 @@ def psw():
         tf = open("TrainingImageLabel\psd.txt", "r")
         key = tf.read()
     else:
-        new_pas = tsd.askstring('Old Password not found', 'Please enter a new password below', show='*')
+        new_pas = tsd.askstring('Old Password not found',
+                                'Please enter a new password below', show='*')
         if new_pas == None:
-            mess._show(title='No Password Entered', message='Password not set!! Please try again')
+            mess._show(title='No Password Entered',
+                       message='Password not set!! Please try again')
         else:
             tf = open("TrainingImageLabel\psd.txt", "w")
             tf.write(new_pas)
-            mess._show(title='Password Registered', message='New password was registered successfully!!')
+            mess._show(title='Password Registered',
+                       message='New password was registered successfully!!')
             return
     password = tsd.askstring('Password', 'Enter Password', show='*')
     if (password == key):
@@ -130,9 +167,11 @@ def psw():
     elif (password == None):
         pass
     else:
-        mess._show(title='Wrong Password', message='You have entered wrong password')
+        mess._show(title='Wrong Password',
+                   message='You have entered wrong password')
 
 ######################################################################################
+
 
 def clear():
     txt.delete(0, 'end')
@@ -146,6 +185,7 @@ def clear2():
     message1.configure(text=res)
 
 #######################################################################################
+
 
 def TakeImages():
     check_haarcascadefile()
@@ -209,6 +249,7 @@ def TakeImages():
 
 ########################################################################################
 
+
 def TrainImages():
     check_haarcascadefile()
     assure_path_exists("TrainingImageLabel/")
@@ -219,14 +260,16 @@ def TrainImages():
     try:
         recognizer.train(faces, np.array(ID))
     except:
-        mess._show(title='No Registrations', message='Please Register someone first!!!')
+        mess._show(title='No Registrations',
+                   message='Please Register someone first!!!')
         return
     recognizer.save("TrainingImageLabel\Trainner.yml")
     res = "Profile Saved Successfully"
     message1.configure(text=res)
     message.configure(text='Total Registrations till now  : ' + str(ID[0]))
 
-############################################################################################3
+# 3
+
 
 def getImagesAndLabels(path):
     # get the path of all the files in the folder
@@ -250,6 +293,7 @@ def getImagesAndLabels(path):
 
 ###########################################################################################
 
+
 def TrackImages():
     check_haarcascadefile()
     assure_path_exists("Attendance/")
@@ -264,10 +308,11 @@ def TrackImages():
     if exists3:
         recognizer.read("TrainingImageLabel\Trainner.yml")
     else:
-        mess._show(title='Data Missing', message='Please click on Save Profile to reset data!!')
+        mess._show(title='Data Missing',
+                   message='Please click on Save Profile to reset data!!')
         return
     harcascadePath = "haarcascade_frontalface_default.xml"
-    faceCascade = cv2.CascadeClassifier(harcascadePath);
+    faceCascade = cv2.CascadeClassifier(harcascadePath)
 
     cam = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_SIMPLEX
@@ -276,7 +321,8 @@ def TrackImages():
     if exists1:
         df = pd.read_csv("StudentDetails\StudentDetails.csv")
     else:
-        mess._show(title='Details Missing', message='Students details are missing, please check!')
+        mess._show(title='Details Missing',
+                   message='Students details are missing, please check!')
         cam.release()
         cv2.destroyAllWindows()
         window.destroy()
@@ -290,14 +336,16 @@ def TrackImages():
             if (conf < 50):
                 ts = time.time()
                 date = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y')
-                timeStamp = datetime.datetime.fromtimestamp(ts).strftime('%H:%M:%S')
+                timeStamp = datetime.datetime.fromtimestamp(
+                    ts).strftime('%H:%M:%S')
                 aa = df.loc[df['SERIAL NO.'] == serial]['NAME'].values
                 ID = df.loc[df['SERIAL NO.'] == serial]['ID'].values
                 ID = str(ID)
                 ID = ID[1:-1]
                 bb = str(aa)
                 bb = bb[2:-2]
-                attendance = [str(ID), '', bb, '', str(date), '', str(timeStamp)]
+                attendance = [str(ID), '', bb, '', str(date),
+                              '', str(timeStamp)]
 
             else:
                 Id = 'Unknown'
@@ -308,93 +356,244 @@ def TrackImages():
             break
     ts = time.time()
     date = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y')
-    exists = os.path.isfile("Attendance\Attendance_" + date + ".csv")
+    exists = os.path.isfile("Attendance\Attendance_" +
+                            date + "_" + selected_field.get() + ".csv")
     if exists:
-        with open("Attendance\Attendance_" + date + ".csv", 'a+') as csvFile1:
+        with open("Attendance\Attendance_" + date + "_" + selected_field.get() + ".csv", 'a+') as csvFile1:
             writer = csv.writer(csvFile1)
             writer.writerow(attendance)
         csvFile1.close()
     else:
-        with open("Attendance\Attendance_" + date + ".csv", 'a+') as csvFile1:
+        with open("Attendance\Attendance_" + date + "_" + selected_field.get() + ".csv", 'a+') as csvFile1:
             writer = csv.writer(csvFile1)
             writer.writerow(col_names)
             writer.writerow(attendance)
         csvFile1.close()
-    with open("Attendance\Attendance_" + date + ".csv", 'r') as csvFile1:
+    with open("Attendance\Attendance_" + date + "_" + selected_field.get() + ".csv", 'r') as csvFile1:
         reader1 = csv.reader(csvFile1)
         for lines in reader1:
             i = i + 1
             if (i > 1):
                 if (i % 2 != 0):
                     iidd = str(lines[0]) + '   '
-                    tv.insert('', 0, text=iidd, values=(str(lines[2]), str(lines[4]), str(lines[6])))
+                    tv.insert('', 0, text=iidd, values=(
+                        str(lines[2]), str(lines[4]), str(lines[6])))
     csvFile1.close()
     cam.release()
     cv2.destroyAllWindows()
 
+# MAIL ##############################################3
+
+# def sendmail():
+#     receiver = "snehdavaria123@gmail.com"  # receiver email address
+#     body = "Attendence File"  # email body
+#     filename = "Attendance"+os.sep+"Attendance_05-04-2023.csv"  # attach the file
+
+#     # mail information
+#     yag = yagmail.SMTP("id","password")
+
+#     # send the mail
+#     yag.send(
+#         to=receiver,
+#         subject="Attendance Report",  # email subject
+#         contents=body,  # email body
+#         attachments=filename,  # file attached
+#     )
 
 
 def sendmail():
-    receiver = "dhairyashah3000@gmail.com"  # receiver email address
-    body = "Attendence File"  # email body
-    filename = "Attendance"+os.sep+"Attendance_13-08-2022.csv"  # attach the file
+    fromaddr = "snehdavaria@gmail.com"
+    toaddr = "snehdavaria123@gmail.com"
 
-    # mail information
-    yag = yagmail.SMTP("dhairyashah1200@gmail.com", "yashvi123")
+    # instance of MIMEMultipart
+    msg = MIMEMultipart()
 
-    # sent the mail
-    yag.send(
-        to=receiver,
-        subject="Attendance Report",  # email subject
-        contents=body,  # email body
-        attachments=filename,  # file attached
-    )
+    # storing the senders email address
+    msg['From'] = fromaddr
+
+    # storing the receivers email address
+    msg['To'] = toaddr
+
+    # storing the subject
+    msg['Subject'] = "Atttendance"
+
+    # string to store the body of the mail
+    body = "Today's Attendance "
+
+    # attach the body with the msg instance
+    msg.attach(MIMEText(body, 'plain'))
+
+    # open the file to be sent
+
+    filename = "Attendance_" + date + "_" + selected_field.get() + ".csv"
+
+    attachment = open(f"./Attendance/{filename}", "rb")
+
+    # instance of MIMEBase and named as p
+    p = MIMEBase('application', 'octet-stream')
+
+    # To change the payload into encoded form
+    p.set_payload((attachment).read())
+
+    # encode into base64
+    encoders.encode_base64(p)
+
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+
+    # attach the instance 'p' to instance 'msg'
+    msg.attach(p)
+
+    # creates SMTP session
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+
+    # start TLS for security
+    s.starttls()
+
+    # Authentication
+    # app password
+    s.login(fromaddr, "ybvpzwnjhmbpeqf")
+
+    # Converts the Multipart msg into a string
+    text = msg.as_string()
+
+    # sending the mail
+    s.sendmail(fromaddr, toaddr, text)
+
+    # terminating the session
+    s.quit()
+
+
 ######################################## USED STUFFS ############################################
-    
+
+
 global key
 key = ''
 
 ts = time.time()
 date = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y')
-day,month,year=date.split("-")
+day, month, year = date.split("-")
 
-mont={'01':'January',
-      '02':'February',
-      '03':'March',
-      '04':'April',
-      '05':'May',
-      '06':'June',
-      '07':'July',
-      '08':'August',
-      '09':'September',
-      '10':'October',
-      '11':'November',
-      '12':'December'
-      }
+mont = {'01': 'January',
+        '02': 'February',
+        '03': 'March',
+        '04': 'April',
+        '05': 'May',
+        '06': 'June',
+        '07': 'July',
+        '08': 'August',
+        '09': 'September',
+        '10': 'October',
+        '11': 'November',
+        '12': 'December'
+        }
+########################SHOW ATTENDANCE###############################
+
+
+class AttendanceManagerGUI:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Attendance Manager")
+
+        # create label for file path
+        file_label = tk.Label(self.window, text="File path:")
+        file_label.grid(row=0, column=0)
+
+        # create entry for file path
+        self.file_entry = tk.Entry(self.window)
+        self.file_entry.grid(row=0, column=1)
+
+        # create button to load attendance
+        load_button = tk.Button(self.window, text="Load",
+                                command=self.load_attendance)
+        load_button.grid(row=0, column=2)
+
+        # create treeview to display attendance
+        self.attendance_treeview = ttk.Treeview(self.window)
+        self.attendance_treeview["columns"] = (
+            "Student", "Total Present", "Percentage")
+        self.attendance_treeview.column("#0", width=0, stretch=tk.NO)
+        self.attendance_treeview.column("Student", anchor=tk.CENTER, width=200)
+        self.attendance_treeview.column(
+            "Total Present", anchor=tk.CENTER, width=150)
+        self.attendance_treeview.column(
+            "Percentage", anchor=tk.CENTER, width=150)
+        self.attendance_treeview.heading("#0", text="")
+        self.attendance_treeview.heading(
+            "Student", text="Student", anchor=tk.CENTER)
+        self.attendance_treeview.heading(
+            "Total Present", text="Total Present", anchor=tk.CENTER)
+        self.attendance_treeview.heading(
+            "Percentage", text="Percentage", anchor=tk.CENTER)
+        self.attendance_treeview.grid(row=1, column=0, columnspan=3)
+
+        # create label for total attendance
+        total_label = tk.Label(self.window, text="Total Lectures:")
+        total_label.grid(row=2, column=0)
+
+        # create entry for total attendance
+        self.total_entry = tk.Entry(self.window)
+        self.total_entry.grid(row=2, column=1)
+
+        # create button to show defaulters
+        defaulters_button = tk.Button(
+            self.window, text="Show Defaulters", command=self.show_defaulters)
+        defaulters_button.grid(row=2, column=2)
+
+        self.window.mainloop()
+
+    def load_attendance(self):
+        file_path = self.file_entry.get()
+        attendance_df = pd.read_csv("./Attendance/Attendance_05-04-2023.csv")
+        student_list = attendance_df["Name"].unique()
+        total_attendance = int(self.total_entry.get())
+        for student in student_list:
+            present_count = attendance_df[attendance_df["Name"]
+                                          == student]["Time"].count()
+            percentage = present_count / total_attendance * 100
+            self.attendance_treeview.insert("", tk.END, text="", values=(
+                student, present_count, round(percentage, 2)))
+
+    def show_defaulters(self):
+        defaulter_list = []
+        for student in self.attendance_treeview.get_children():
+            percentage = self.attendance_treeview.item(student, "values")[2]
+            if float(percentage) < 75:
+                student_name = self.attendance_treeview.item(student, "values")[
+                    0]
+                defaulter_list.append(student_name)
+        defaulter_string = ", ".join(defaulter_list)
+        if defaulter_string:
+            messagebox.showinfo(
+                "Defaulters", "The following students have attendance less than 75%: {}".format(defaulter_string))
+        else:
+            messagebox.showinfo(
+                "Defaulters", "No students have attendance less than 75%.")
+
 
 ######################################## GUI FRONT-END ###########################################
 
 window = tk.Tk()
 window.geometry("1280x720")
-window.resizable(True,False)
+window.resizable(True, False)
 window.title("Attendance System")
-# window.configure(background='#262523')
-image = Image.open('C:\Dhairya\SEM 4\pythonmini\MiniProject sem4\Face_recognition_based_attendance_system-master\Desktop2.jpg')
-python_image = ImageTk.PhotoImage(image)
-background_label = tk.Label(window, image=python_image)
-background_label.place(x=0, y=0, relwidth=1, relheight=1)
+window.configure(background='#262523')
+# image = Image.open('C:\Users\snehd\Downloads\Face_recognition_based_attendance_system-master\Face_recognition_based_attendance_system-master\Desktop2.jpg')
+#python_image = ImageTk.PhotoImage(image)
+#background_label = tk.Label(window, image=python_image)
+#background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
 
 # frame1 = tk.Frame(window, bg="#d4559d")
 frame1 = tk.Frame(window, bg="#0f1b2e")
-frame1.place(relx=0.11, rely=0.17, relwidth=0.39, relheight=0.80)
+frame1.place(relx=0.10, rely=0.16, relwidth=0.39, relheight=1.5)
 
 # frame2 = tk.Frame(window, bg="#d4559d")
 frame2 = tk.Frame(window, bg="#0f1b2e")
-frame2.place(relx=0.51, rely=0.17, relwidth=0.38, relheight=0.80)
+frame2.place(relx=0.51, rely=0.16, relwidth=0.39, relheight=1.5)
 
 # message3 = tk.Label(window, text="Face Recognition Based Attendance System" ,fg="white",bg="#262523" ,width=55 ,height=1,font=('times', 29, ' bold '))
-message3 = tk.Label(window, text="Face Recognition Based Attendance System" ,fg="white",bg="#0f1b2e" ,width=55 ,height=1,font=('times', 29, ' bold '))
+message3 = tk.Label(window, text="Face Recognition Based Attendance System",
+                    fg="white", bg="#0f1b2e", width=55, height=1, font=('times', 29, ' bold '))
 message3.place(x=10, y=10)
 
 frame3 = tk.Frame(window, bg="#c4c6ce")
@@ -403,45 +602,63 @@ frame3.place(relx=0.52, rely=0.09, relwidth=0.09, relheight=0.07)
 frame4 = tk.Frame(window, bg="#c4c6ce")
 frame4.place(relx=0.36, rely=0.09, relwidth=0.16, relheight=0.07)
 
-datef = tk.Label(frame4, text = day+"-"+mont[month]+"-"+year+"  |  ", fg="white",bg="#0f1b2e" ,width=55 ,height=1,font=('times', 22, ' bold '))
-datef.pack(fill='both',expand=1)
+datef = tk.Label(frame4, text=day+"-"+mont[month]+"-"+year+"  |  ", fg="white",
+                 bg="#0f1b2e", width=55, height=1, font=('times', 22, ' bold '))
+datef.pack(fill='both', expand=1)
 
-clock = tk.Label(frame3,fg="white",bg="#0f1b2e" ,width=55 ,height=1,font=('times', 22, ' bold '))
-clock.pack(fill='both',expand=1)
+clock = tk.Label(frame3, fg="white", bg="#0f1b2e", width=55,
+                 height=1, font=('times', 22, ' bold '))
+clock.pack(fill='both', expand=1)
 tick()
 
-head2 = tk.Label(frame2, text="                       For New Registrations                       ", fg="black",bg="#3ece48" ,font=('times', 17, ' bold ') )
-head2.grid(row=0,column=0)
+head2 = tk.Label(frame2, text="                       For New Registrations                       ",
+                 fg="black", bg="#3ece48", font=('times', 17, ' bold '))
+head2.grid(row=0, column=0)
 
-head1 = tk.Label(frame1, text="                       For Already Registered                       ", fg="black",bg="#3ece48" ,font=('times', 17, ' bold ') )
-head1.place(x=0,y=0)
+head1 = tk.Label(frame1, text="                       For Already Registered                       ",
+                 fg="black", bg="#3ece48", font=('times', 17, ' bold '))
+head1.place(x=0, y=0)
 
 
-
-
-
-lbl = tk.Label(frame2, text="Enter ID",width=20  ,height=1  ,fg="black"  ,bg="#43bab6" ,font=('times', 17, ' bold ') )
+lbl = tk.Label(frame2, text="Enter ID", width=20, height=1,
+               fg="black", bg="#43bab6", font=('times', 17, ' bold '))
 lbl.place(x=80, y=55)
 
-txt = tk.Entry(frame2,width=32 ,fg="black",font=('times', 15, ' bold '))
+txt = tk.Entry(frame2, width=32, fg="black", font=('times', 15, ' bold '))
 txt.place(x=30, y=88)
 
-lbl2 = tk.Label(frame2, text="Enter Name",width=20  ,fg="black"  ,bg="#43bab6",border="0" ,font=('times', 17, ' bold '))
+lbl2 = tk.Label(frame2, text="Enter Name", width=20, fg="black",
+                bg="#43bab6", border="0", font=('times', 17, ' bold '))
 lbl2.place(x=80, y=140)
 
-txt2 = tk.Entry(frame2,width=32 ,fg="black",font=('times', 15, ' bold ')  )
+txt2 = tk.Entry(frame2, width=32, fg="black", font=('times', 15, ' bold '))
 txt2.place(x=30, y=173)
 
-message1 = tk.Label(frame2, text="1)Take Images  >>>  2)Save Profile" ,bg="#43bab6" ,fg="black"  ,width=39 ,height=1, activebackground = "yellow" ,font=('times', 15, ' bold '))
-message1.place(x=7, y=230)
+message1 = tk.Label(frame2, text="1)Take Images  >>>  2)Save Profile", bg="#43bab6",
+                    fg="black", width=39, height=1, activebackground="yellow", font=('times', 15, ' bold '))
+message1.place(x=7, y=210)
 
-message = tk.Label(frame2, text="" ,bg="#43bab6" ,fg="black"  ,width=39,height=1, activebackground = "yellow" ,font=('times', 16, ' bold '))
-message.place(x=7, y=450)
+# DROPDOWN
+labelsub = tk.Label(frame2, text="Select a Subject :", bg="#43bab6", fg="black",
+                    width=15, height=1, activebackground="yellow", font=('times', 15, ' bold '))
+labelsub.place(x=30, y=260)
+options = ["DMBI", "WT", "AI&DS", "IP", "WEBX"]
+selected_field = tk.StringVar()
+dropdown1 = ttk.Combobox(frame2, textvariable=selected_field, values=options,
+                         width=15, height=1,  font=('times', 15, ' bold '))
+dropdown1.place(x=250, y=260)
 
-lbl3 = tk.Label(frame1, text="Attendance",width=20  ,fg="black"  ,bg="#43bab6"  ,height=1 ,font=('times', 17, ' bold '))
+###############
+
+message = tk.Label(frame2, text="", bg="#43bab6", fg="black", width=39,
+                   height=1, activebackground="yellow", font=('times', 16, ' bold '))
+message.place(x=7, y=500)
+
+lbl3 = tk.Label(frame1, text="Attendance", width=20, fg="black",
+                bg="#43bab6", height=1, font=('times', 17, ' bold '))
 lbl3.place(x=100, y=115)
 
-res=0
+res = 0
 exists = os.path.isfile("StudentDetails\StudentDetails.csv")
 if exists:
     with open("StudentDetails\StudentDetails.csv", 'r') as csvFile1:
@@ -456,30 +673,30 @@ message.configure(text='Total Registrations till now  : '+str(res))
 
 ##################### MENUBAR #################################
 
-menubar = tk.Menu(window,relief='ridge')
-filemenu = tk.Menu(menubar,tearoff=0)
-filemenu.add_command(label='Change Password', command = change_pass)
-filemenu.add_command(label='Contact Us', command = contact)
-filemenu.add_command(label='Exit',command = window.destroy)
-menubar.add_cascade(label='Help',font=('times', 29, ' bold '),menu=filemenu)
+menubar = tk.Menu(window, relief='ridge')
+filemenu = tk.Menu(menubar, tearoff=0)
+filemenu.add_command(label='Change Password', command=change_pass)
+filemenu.add_command(label='Contact Us', command=contact)
+filemenu.add_command(label='Exit', command=window.destroy)
+menubar.add_cascade(label='Help', font=('times', 29, ' bold '), menu=filemenu)
 
 ################## TREEVIEW ATTENDANCE TABLE ####################
 
-tv= ttk.Treeview(frame1,height =13,columns = ('name','date','time'))
-tv.column('#0',width=82)
-tv.column('name',width=130)
-tv.column('date',width=133)
-tv.column('time',width=133)
-tv.grid(row=2,column=0,padx=(0,0),pady=(150,0),columnspan=4)
-tv.heading('#0',text ='ID')
-tv.heading('name',text ='NAME')
-tv.heading('date',text ='DATE')
-tv.heading('time',text ='TIME')
+tv = ttk.Treeview(frame1, height=13, columns=('name', 'date', 'time'))
+tv.column('#0', width=82)
+tv.column('name', width=130)
+tv.column('date', width=133)
+tv.column('time', width=133)
+tv.grid(row=2, column=0, padx=(0, 0), pady=(150, 0), columnspan=4)
+tv.heading('#0', text='ID')
+tv.heading('name', text='NAME')
+tv.heading('date', text='DATE')
+tv.heading('time', text='TIME')
 
 ###################### SCROLLBAR ################################
 
-scroll=ttk.Scrollbar(frame1,orient='vertical',command=tv.yview)
-scroll.grid(row=2,column=4,padx=(0,100),pady=(150,0),sticky='ns')
+scroll = ttk.Scrollbar(frame1, orient='vertical', command=tv.yview)
+scroll.grid(row=2, column=4, padx=(0, 100), pady=(150, 0), sticky='ns')
 tv.configure(yscrollcommand=scroll.set)
 
 ###################### BUTTONS ##################################
@@ -487,7 +704,7 @@ tv.configure(yscrollcommand=scroll.set)
 # clearButton = tk.Button(frame2, text="Clear", command=clear  ,fg="black"  ,bg="#e4eb6a"  ,width=11 ,activebackground = "white" ,font=('times', 11, ' bold '))
 # clearButton.place(x=335, y=86)
 # clearButton2 = tk.Button(frame2, text="Clear", command=clear2  ,fg="black"  ,bg="#e4eb6a"  ,width=11 , activebackground = "white" ,font=('times', 11, ' bold '))
-# clearButton2.place(x=335, y=172)    
+# clearButton2.place(x=335, y=172)
 # takeImg = tk.Button(frame2, text="Take Images", command=TakeImages  ,fg="white"  ,bg="#43bab6"  ,width=34  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
 # takeImg.place(x=30, y=300)
 # trainImg = tk.Button(frame2, text="Save Profile", command=psw ,fg="white"  ,bg="#43bab6"  ,width=34  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
@@ -496,21 +713,86 @@ tv.configure(yscrollcommand=scroll.set)
 # trackImg.place(x=30,y=50)
 # quitWindow = tk.Button(frame1, text="Quit", command=window.destroy  ,fg="black"  ,bg="#3ece48"  ,width=35 ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
 # quitWindow.place(x=30, y=450)
-clearButton = tk.Button(frame2, text="Clear", command=clear  ,fg="black"  ,bg="#e4eb6a"  ,width=11 ,activebackground = "white" ,font=('times', 11, ' bold '))
+clearButton = tk.Button(frame2, text="Clear", command=clear, fg="black",
+                        bg="#e4eb6a", width=11, activebackground="white", font=('times', 11, ' bold '))
 clearButton.place(x=335, y=86)
-clearButton2 = tk.Button(frame2, text="Clear", command=clear2  ,fg="black"  ,bg="#e4eb6a"  ,width=11 , activebackground = "white" ,font=('times', 11, ' bold '))
-clearButton2.place(x=335, y=172)    
-takeImg = tk.Button(frame2, text="Take Images", command=TakeImages  ,fg="white"  ,bg="#43bab6"  ,width=34  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
+clearButton2 = tk.Button(frame2, text="Clear", command=clear2, fg="black",
+                         bg="#e4eb6a", width=11, activebackground="white", font=('times', 11, ' bold '))
+clearButton2.place(x=335, y=172)
+takeImg = tk.Button(frame2, text="Take Images", command=TakeImages, fg="white", bg="#43bab6",
+                    width=34, height=1, activebackground="white", font=('times', 15, ' bold '))
 takeImg.place(x=30, y=300)
-trainImg = tk.Button(frame2, text="Save Profile", command=psw ,fg="white"  ,bg="#43bab6"  ,width=34  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
+trainImg = tk.Button(frame2, text="Save Profile", command=psw, fg="white", bg="#43bab6",
+                     width=34, height=1, activebackground="white", font=('times', 15, ' bold '))
 trainImg.place(x=30, y=350)
-smail = tk.Button(frame2, text="Send Mail", command=sendmail ,fg="white"  ,bg="#43bab6"  ,width=34  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
+smail = tk.Button(frame2, text="Send Mail", command=sendmail, fg="white", bg="#43bab6",
+                  width=34, height=1, activebackground="white", font=('times', 15, ' bold '))
 smail.place(x=30, y=400)
-trackImg = tk.Button(frame1, text="Take Attendance", command=TrackImages  ,fg="black"  ,bg="yellow"  ,width=35  ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
-trackImg.place(x=30,y=50)
-quitWindow = tk.Button(frame1, text="Quit", command=window.destroy  ,fg="black"  ,bg="#3ece48"  ,width=35 ,height=1, activebackground = "white" ,font=('times', 15, ' bold '))
-quitWindow.place(x=30, y=450)
+attendance1 = tk.Button(frame2, text="Attendance", command=AttendanceManagerGUI, fg="white", bg="#43bab6",
+                        width=34, height=1, activebackground="white", font=('times', 15, ' bold '))
+attendance1.place(x=30, y=450)
+trackImg = tk.Button(frame1, text="Take Attendance", command=TrackImages, fg="black",
+                     bg="yellow", width=35, height=1, activebackground="white", font=('times', 15, ' bold '))
+trackImg.place(x=30, y=50)
 
+############# MERGE ###############
+
+
+def merge():
+    # Read in the CSV files
+    filename1 = "Attendance\Attendance_" + date + "_" + selected_field.get() + \
+        ".csv"
+    df2 = pd.read_csv(filename1)
+    if selected_field.get() == "DMBI":
+        df1 = pd.read_csv("Mainattendance/DMBI.csv")
+        result = pd.concat([df1, df2])
+        # Write the result to a new CSV file
+        result.to_csv("Mainattendance/DMBI.csv", index=False)
+        return
+    elif selected_field.get() == "WT":
+        df1 = pd.read_csv("Mainattendance/WT.csv")
+        result = pd.concat([df1, df2])
+        # Write the result to a new CSV file
+        result.to_csv("Mainattendance/WT.csv", index=False)
+        return
+    if selected_field.get() == "IP":
+        df1 = pd.read_csv("Mainattendance/IP.csv")
+        result = pd.concat([df1, df2])
+        # Write the result to a new CSV file
+        result.to_csv("Mainattendance/IP.csv", index=False)
+        return
+    if selected_field.get() == "WEBX":
+        df1 = pd.read_csv("Mainattendance/WEBX.csv")
+        result = pd.concat([df1, df2])
+        # Write the result to a new CSV file
+        result.to_csv("Mainattendance/WEBX.csv", index=False)
+        return
+    if selected_field.get() == "AI&DS":
+        df1 = pd.read_csv("Mainattendance/AI&DS.csv")
+        result = pd.concat([df1, df2])
+        # Write the result to a new CSV file
+        result.to_csv("Mainattendance/AI&DS.csv", index=False)
+        return
+
+
+##############################
+mergeattendance = tk.Button(frame1, text="Merge Attendance", command=merge, fg="black", bg="#3ece48",
+                            width=35, height=1, activebackground="white", font=('times', 15, ' bold '))
+mergeattendance.place(x=30, y=450)
+
+quitWindow = tk.Button(frame1, text="Quit", command=window.destroy, fg="black", bg="#3ece48",
+                       width=35, height=1, activebackground="white", font=('times', 15, ' bold '))
+quitWindow.place(x=30, y=500)
+
+
+
+# def run():
+    # os.system('python test6.py')
+#     cmd = "python ./home_page/AMS.py"
+#     subprocess.call(cmd, shell=True)    
+
+# admin_button = tk.Button(window, text="Admin",height=0, width=5, command=run)
+# admin_button.place(x=0, y=0)
 ##################### END ######################################
 
 window.configure(menu=menubar)

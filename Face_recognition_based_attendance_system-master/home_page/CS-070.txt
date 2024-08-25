@@ -1,0 +1,22 @@
+
+                  CS-070                  Present                  ENG                  20:47:29              2019-01-08
+                  CS-070                  Present                  PST                  23:18:19              2019-01-08
+                  CS-070                  Present                  FCE                  20:06:33              2019-01-09
+                  CS-070                  Present                  FCE                  21:02:36              2019-01-09
+                  CS-070                  Present                  FCE                  13:44:13              2019-01-13
+                  CS-070                  Present                  FCE                  21:00:34              2019-01-15
+                  CS-070                  Present                  BEE                  12:56:09              2019-01-27
+                  CS-070                  Present                  ENG                  12:59:42              2019-01-27
+                  CS-070                  Present                  CAL                  13:00:58              2019-01-27
+                  CS-070                  Present                  FCE                  13:01:56              2019-01-27
+                  CS-070                  Present                  ENG                  13:04:23              2019-01-27
+                  CS-070                  Present                  FCE                  13:06:28              2019-01-27
+                  CS-070                  Present                  FCE                  13:06:28              2019-01-27
+                  CS-070                  Present                  BEE                  13:10:37              2019-01-27
+                  CS-070                  Present                  ENG                  13:27:21              2019-01-27
+                  CS-070                  Present                  ENG                  00:38:29              2019-01-29
+                  CS-070                  Present                  CAL                  18:39:03              2019-02-21
+                  CS-070                  Present                  FCE                  13:40:16              2019-07-06
+                  CS-070                  Present                  ENG                  19:01:49              2019-10-01
+                  CS-070                  Present                  BEE                  16:43:23              2019-10-02
+                  CS-070                  Present                  PST                  19:27:49              2019-10-02
